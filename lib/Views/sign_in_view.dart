@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
@@ -20,6 +21,8 @@ class _SignInViewState extends State<SignInView> {
   String? email, password;
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
+  bool showpassword = true;
+  bool passowrdObsecure = false;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +86,33 @@ class _SignInViewState extends State<SignInView> {
                       height: 10,
                     ),
                     CustomTextFormField(
-                      obscureText: true,
+                      icon: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: IconButton(
+                          onPressed: () {
+                            if (showpassword == true) {
+                              showpassword = false;
+                              passowrdObsecure = true;
+                            } else if (showpassword == false) {
+                              showpassword = true;
+                              passowrdObsecure = false;
+                            }
+                            setState(() {});
+                          },
+                          icon: showpassword == true
+                              ? const Icon(
+                                  FontAwesomeIcons.eye,
+                                  color: Colors.black54,
+                                  size: 25,
+                                )
+                              : const Icon(
+                                  FontAwesomeIcons.eyeSlash,
+                                  color: Colors.black54,
+                                  size: 25,
+                                ),
+                        ),
+                      ),
+                      obscureText: passowrdObsecure,
                       onChanged: (value) {
                         password = value;
                       },

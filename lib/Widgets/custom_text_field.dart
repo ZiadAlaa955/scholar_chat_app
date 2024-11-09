@@ -6,11 +6,13 @@ class CustomTextFormField extends StatelessWidget {
     required this.hint,
     this.onChanged,
     required this.obscureText,
+    this.icon,
   });
 
   final String hint;
   final bool obscureText;
   final void Function(String)? onChanged;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
         color: Colors.white,
       ),
       decoration: InputDecoration(
+        suffixIcon: icon,
         hintText: hint,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 20,
