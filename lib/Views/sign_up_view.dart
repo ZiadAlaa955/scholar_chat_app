@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:scholar_chat_app/Views/sign_in_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/constants.dart';
@@ -63,13 +64,19 @@ class _SignUpViewState extends State<SignUpView> {
                 const SizedBox(
                   height: 16,
                 ),
-                const CustomTextField(
+                CustomTextField(
+                  onChanged: (value) {
+                    email = value;
+                  },
                   hint: 'Email',
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                const CustomTextField(
+                CustomTextField(
+                  onChanged: (value) {
+                    password = value;
+                  },
                   hint: 'Password',
                 ),
                 const SizedBox(
@@ -78,19 +85,15 @@ class _SignUpViewState extends State<SignUpView> {
                 CustomButton(
                   onTap: () async {
                     try {
-                      final credential = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                        email: email!,
-                        password: password!,
-                      );
+                      await signUp();
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
-                        log('The password provided is too weak.');
+                        snackBar(context, 'The password is too weak.');
                       } else if (e.code == 'email-already-in-use') {
-                        log('The account already exists for that email.');
+                        snackBar(context, 'The account already exists');
                       }
                     } catch (e) {
-                      log(e.toString());
+                      snackBar(context, e.toString());
                     }
                   },
                   text: 'Sign Up',
@@ -128,6 +131,14 @@ class _SignUpViewState extends State<SignUpView> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> signUp() async {
+    final credential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email!,
+      password: password!,
     );
   }
 }
