@@ -72,7 +72,8 @@ class _SignInViewState extends State<SignInView> {
                     const SizedBox(
                       height: 16,
                     ),
-                    CustomTextField(
+                    CustomTextFormField(
+                      obscureText: false,
                       onChanged: (value) {
                         email = value;
                       },
@@ -81,7 +82,8 @@ class _SignInViewState extends State<SignInView> {
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomTextField(
+                    CustomTextFormField(
+                      obscureText: true,
                       onChanged: (value) {
                         password = value;
                       },

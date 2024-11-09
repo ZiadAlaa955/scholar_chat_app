@@ -20,6 +20,7 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
   String? email, password;
   bool isLoading = false;
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,115 +31,122 @@ class _SignUpViewState extends State<SignUpView> {
           inAsyncCall: isLoading,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 75,
-                  ),
-                  Image.asset(
-                    kLogo,
-                    height: 100,
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Scholar Chat',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontFamily: 'Pacifico',
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 75,
-                  ),
-                  const Row(
-                    children: [
-                      Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  CustomTextField(
-                    onChanged: (value) {
-                      email = value;
-                    },
-                    hint: 'Email',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextField(
-                    onChanged: (value) {
-                      password = value;
-                    },
-                    hint: 'Password',
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomButton(
-                    text: 'Sign Up',
-                    onTap: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      try {
-                        await signUp();
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code.toString() == 'weak-password') {
-                          snackBar(context, 'The password is too weak.');
-                        } else if (e.code == 'email-already-in-use') {
-                          snackBar(context, 'The account already exists');
-                        }
-                      } catch (e) {
-                        snackBar(context, e.toString());
-                      }
-                      setState(() {
-                        isLoading = false;
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Already have an account ?',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text(
-                          '  Sign In',
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 75,
+                    ),
+                    Image.asset(
+                      kLogo,
+                      height: 100,
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Scholar Chat',
                           style: TextStyle(
-                            color: Color(0xffC5E8E8),
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontFamily: 'Pacifico',
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 120,
-                  ),
-                ],
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 75,
+                    ),
+                    const Row(
+                      children: [
+                        Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      obscureText: false,
+                      onChanged: (value) {
+                        email = value;
+                      },
+                      hint: 'Email',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      obscureText: true,
+                      onChanged: (value) {
+                        password = value;
+                      },
+                      hint: 'Password',
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomButton(
+                      text: 'Sign Up',
+                      onTap: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        if (formKey.currentState!.validate()) {
+                          try {
+                            await signUp();
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code.toString() == 'weak-password') {
+                              snackBar(context, 'The password is too weak.');
+                            } else if (e.code == 'email-already-in-use') {
+                              snackBar(context, 'The account already exists');
+                            }
+                          } on Exception catch (e) {
+                            snackBar(context, e.toString());
+                          }
+                        }
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Already have an account ?',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            '  Sign In',
+                            style: TextStyle(
+                              color: Color(0xffC5E8E8),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 120,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
