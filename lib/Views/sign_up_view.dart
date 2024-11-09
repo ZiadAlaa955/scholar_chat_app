@@ -1,23 +1,21 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class SignInView extends StatefulWidget {
-  const SignInView({super.key});
-  static String id = 'siginView';
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
+  static String id = 'signupView';
 
   @override
-  State<SignInView> createState() => _SignInViewState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _SignInViewState extends State<SignInView> {
+class _SignUpViewState extends State<SignUpView> {
   String? email, password;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +52,7 @@ class _SignInViewState extends State<SignInView> {
                 const Row(
                   children: [
                     Text(
-                      'Sign In',
+                      'Sign Up',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 28,
@@ -65,41 +63,37 @@ class _SignInViewState extends State<SignInView> {
                 const SizedBox(
                   height: 16,
                 ),
-                CustomTextField(
-                  onChanged: (value) {
-                    email = value;
-                  },
+                const CustomTextField(
                   hint: 'Email',
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                CustomTextField(
-                  onChanged: (value) {
-                    password = value;
-                  },
+                const CustomTextField(
                   hint: 'Password',
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 CustomButton(
-                  text: 'Sign In',
                   onTap: () async {
                     try {
                       final credential = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
+                          .createUserWithEmailAndPassword(
                         email: email!,
                         password: password!,
                       );
                     } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        log('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                        log('Wrong password provided for that user.');
+                      if (e.code == 'weak-password') {
+                        log('The password provided is too weak.');
+                      } else if (e.code == 'email-already-in-use') {
+                        log('The account already exists for that email.');
                       }
+                    } catch (e) {
+                      log(e.toString());
                     }
                   },
+                  text: 'Sign Up',
                 ),
                 const SizedBox(
                   height: 10,
@@ -108,17 +102,17 @@ class _SignInViewState extends State<SignInView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'Don\'t have an account ?',
+                      'Already have an account ?',
                       style: TextStyle(
                         color: Colors.white,
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, SignUpView.id);
+                        Navigator.pop(context);
                       },
                       child: const Text(
-                        '  Sign Up',
+                        '  Sign In',
                         style: TextStyle(
                           color: Color(0xffC5E8E8),
                         ),
