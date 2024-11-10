@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:scholar_chat_app/Views/chat_view.dart';
 import 'package:scholar_chat_app/Views/sign_in_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
@@ -131,11 +132,14 @@ class _SignUpViewState extends State<SignUpView> {
                         if (formKey.currentState!.validate()) {
                           try {
                             await signUp();
+                            Navigator.pushNamed(context, ChatView.id);
                           } on FirebaseAuthException catch (e) {
                             if (e.code.toString() == 'weak-password') {
                               snackBar(context, 'The password is too weak.');
                             } else if (e.code == 'email-already-in-use') {
                               snackBar(context, 'The account already exists');
+                            } else {
+                              snackBar(context, e.toString());
                             }
                           } on Exception catch (e) {
                             snackBar(context, e.toString());

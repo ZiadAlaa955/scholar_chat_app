@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_chat_app/Views/chat_view.dart';
 import 'package:scholar_chat_app/Views/sign_in_view.dart';
 import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'firebase_options.dart';
@@ -23,6 +24,7 @@ class ScholarChatApp extends StatelessWidget {
       routes: {
         SignInView.id: (context) => const SignInView(),
         SignUpView.id: (context) => const SignUpView(),
+        ChatView.id: (context) => const ChatView(),
       },
       initialRoute: SignInView.id,
     );

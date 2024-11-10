@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:scholar_chat_app/Views/chat_view.dart';
 import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
@@ -93,7 +94,7 @@ class _SignInViewState extends State<SignInView> {
                             if (showpassword == true) {
                               showpassword = false;
                               passowrdObsecure = true;
-                            } else if (showpassword == false) {
+                            } else {
                               showpassword = true;
                               passowrdObsecure = false;
                             }
@@ -130,11 +131,14 @@ class _SignInViewState extends State<SignInView> {
                         if (formKey.currentState!.validate()) {
                           try {
                             await logIn();
+                            Navigator.pushNamed(context, ChatView.id);
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'user-not-found') {
                               snackBar(context, 'User not found');
                             } else if (e.code == 'wrong-password') {
                               snackBar(context, 'Wrong passwor');
+                            } else {
+                              snackBar(context, e.toString());
                             }
                           } on Exception catch (e) {
                             snackBar(context, e.toString());
