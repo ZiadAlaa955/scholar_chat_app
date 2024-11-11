@@ -8,14 +8,14 @@ class ChatView extends StatelessWidget {
   ChatView({super.key});
   static String id = 'chatView';
   CollectionReference messages =
-      FirebaseFirestore.instance.collection(kMessagesCollection);
+      FirebaseFirestore.instance.collection('messages');
   TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var email = ModalRoute.of(context)!.settings.arguments;
-    return FutureBuilder<QuerySnapshot>(
-      future: messages.get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: messages.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           List<MessageModel> messageList = [];
