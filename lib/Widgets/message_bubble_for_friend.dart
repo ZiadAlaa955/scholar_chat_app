@@ -3,8 +3,8 @@ import 'package:scholar_chat_app/Models/message_model.dart';
 import 'package:scholar_chat_app/constants.dart';
 
 class MessageBubbleForFriend extends StatelessWidget {
-  const MessageBubbleForFriend({super.key, required this.message});
-  final MessageModel message;
+  const MessageBubbleForFriend({super.key, required this.messageModel});
+  final MessageModel messageModel;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class MessageBubbleForFriend extends StatelessWidget {
               bottom: 30,
             ),
             child: Text(
-              message.message,
+              messageModel.message,
               style: const TextStyle(
                 color: Colors.white,
               ),

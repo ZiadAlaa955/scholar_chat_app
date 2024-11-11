@@ -3,8 +3,9 @@ import 'package:scholar_chat_app/Models/message_model.dart';
 import 'package:scholar_chat_app/constants.dart';
 
 class MessageBubble extends StatelessWidget {
-  const MessageBubble({super.key, required this.message});
-  final MessageModel message;
+  const MessageBubble({super.key, required this.messageModel});
+  final MessageModel messageModel;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,7 +29,7 @@ class MessageBubble extends StatelessWidget {
               bottom: 30,
             ),
             child: Text(
-              message.message,
+              messageModel.message,
               style: const TextStyle(
                 color: Colors.white,
               ),

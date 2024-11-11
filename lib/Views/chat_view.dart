@@ -8,27 +8,28 @@ import 'package:scholar_chat_app/constants.dart';
 class ChatView extends StatelessWidget {
   ChatView({super.key});
   static String id = 'chatView';
-  CollectionReference messages =
-      FirebaseFirestore.instance.collection('messages');
+
+  final CollectionReference messages =
+      FirebaseFirestore.instance.collection(kMessagesCollection);
   TextEditingController textController = TextEditingController();
   ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    var email = ModalRoute.of(context)!.settings.arguments;
+    String email = ModalRoute.of(context)!.settings.arguments as String;
+
     return StreamBuilder<QuerySnapshot>(
-      stream: messages.orderBy('created at', descending: true).snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      stream: messages.orderBy(kCreatedAt, descending: true).snapshots(),
+      builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<MessageModel> messageList = [];
+          List<MessageModel> messagesList = [];
           for (int i = 0; i < snapshot.data!.docs.length; i++) {
-            messageList.add(
+            messagesList.add(
               MessageModel.fromJson(
                 snapshot.data!.docs[i],
               ),
             );
           }
-
           return Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -54,17 +55,17 @@ class ChatView extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
-                    reverse: true,
                     controller: scrollController,
-                    itemCount: messageList.length,
+                    reverse: true,
+                    itemCount: messagesList.length,
                     itemBuilder: (context, index) {
-                      if (messageList[index].email == email) {
+                      if (messagesList[index].email == email) {
                         return MessageBubble(
-                          message: messageList[index],
+                          messageModel: messagesList[index],
                         );
                       } else {
                         return MessageBubbleForFriend(
-                          message: messageList[index],
+                          messageModel: messagesList[index],
                         );
                       }
                     },
@@ -75,38 +76,18 @@ class ChatView extends StatelessWidget {
                   child: TextField(
                     controller: textController,
                     onSubmitted: (value) {
-                      messages.add(
-                        {
-                          'message': value,
-                          'email': email,
-                          'created at': DateTime.now(),
-                        },
-                      );
-                      textController.clear();
-                      scrollController.jumpTo(
-                        scrollController.position.minScrollExtent,
-                      );
+                      sendMessage(value, email);
                     },
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
-                          messages.add(
-                            {
-                              'message': textController.text,
-                              'email': email,
-                              'created at': DateTime.now(),
-                            },
-                          );
-                          textController.clear();
-                          scrollController.jumpTo(
-                            scrollController.position.minScrollExtent,
-                          );
+                          sendMessage(textController.text, email);
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.send,
                           size: 30,
+                          color: kPrimaryColor,
                         ),
-                        color: kPrimaryColor,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
@@ -131,6 +112,18 @@ class ChatView extends StatelessWidget {
           );
         }
       },
+    );
+  }
+
+  void sendMessage(String value, String email) {
+    messages.add({
+      kMessage: value, // John Doe
+      kEmail: email, // Stokes and Sons
+      kCreatedAt: DateTime.now(), // ,42
+    });
+    textController.clear();
+    scrollController.jumpTo(
+      scrollController.position.minScrollExtent,
     );
   }
 }

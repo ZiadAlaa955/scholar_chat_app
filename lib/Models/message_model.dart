@@ -1,3 +1,5 @@
+import 'package:scholar_chat_app/constants.dart';
+
 class MessageModel {
   final String message;
   final String email;
@@ -9,8 +11,8 @@ class MessageModel {
 
   factory MessageModel.fromJson(jsonData) {
     return MessageModel(
-      message: jsonData['message'],
-      email: jsonData['email'],
+      message: jsonData[kMessage],
+      email: jsonData[kEmail],
     );
   }
 }
