@@ -88,9 +88,24 @@ class ChatView extends StatelessWidget {
                       );
                     },
                     decoration: InputDecoration(
-                      suffixIcon: Icon(
-                        Icons.send,
-                        size: 30,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          messages.add(
+                            {
+                              'message': textController.text,
+                              'email': email,
+                              'created at': DateTime.now(),
+                            },
+                          );
+                          textController.clear();
+                          scrollController.jumpTo(
+                            scrollController.position.minScrollExtent,
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.send,
+                          size: 30,
+                        ),
                         color: kPrimaryColor,
                       ),
                       border: OutlineInputBorder(
