@@ -131,7 +131,8 @@ class _SignInViewState extends State<SignInView> {
                         if (formKey.currentState!.validate()) {
                           try {
                             await logIn();
-                            Navigator.pushNamed(context, ChatView.id);
+                            Navigator.pushNamed(context, ChatView.id,
+                                arguments: email);
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'user-not-found') {
                               snackBar(context, 'User not found');

@@ -24,7 +24,7 @@ class ScholarChatApp extends StatelessWidget {
       routes: {
         SignInView.id: (context) => const SignInView(),
         SignUpView.id: (context) => const SignUpView(),
-        ChatView.id: (context) => const ChatView(),
+        ChatView.id: (context) => ChatView(),
       },
       initialRoute: SignInView.id,
     );

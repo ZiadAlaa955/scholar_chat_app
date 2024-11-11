@@ -132,7 +132,8 @@ class _SignUpViewState extends State<SignUpView> {
                         if (formKey.currentState!.validate()) {
                           try {
                             await signUp();
-                            Navigator.pushNamed(context, ChatView.id);
+                            Navigator.pushNamed(context, ChatView.id,
+                                arguments: email);
                           } on FirebaseAuthException catch (e) {
                             if (e.code.toString() == 'weak-password') {
                               snackBar(context, 'The password is too weak.');
