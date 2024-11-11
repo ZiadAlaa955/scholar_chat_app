@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:scholar_chat_app/Models/message_model.dart';
 import 'package:scholar_chat_app/Widgets/message_bubble.dart';
+import 'package:scholar_chat_app/Widgets/message_bubble_for_friend.dart';
 import 'package:scholar_chat_app/constants.dart';
 
 class ChatView extends StatelessWidget {
@@ -9,13 +10,14 @@ class ChatView extends StatelessWidget {
   static String id = 'chatView';
   CollectionReference messages =
       FirebaseFirestore.instance.collection('messages');
-  TextEditingController controller = TextEditingController();
+  TextEditingController textController = TextEditingController();
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     var email = ModalRoute.of(context)!.settings.arguments;
     return StreamBuilder<QuerySnapshot>(
-      stream: messages.snapshots(),
+      stream: messages.orderBy('created at', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           List<MessageModel> messageList = [];
@@ -52,26 +54,38 @@ class ChatView extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
+                    reverse: true,
+                    controller: scrollController,
                     itemCount: messageList.length,
                     itemBuilder: (context, index) {
-                      return MessageBubble(
-                        message: messageList[index],
-                      );
+                      if (messageList[index].email == email) {
+                        return MessageBubble(
+                          message: messageList[index],
+                        );
+                      } else {
+                        return MessageBubbleForFriend(
+                          message: messageList[index],
+                        );
+                      }
                     },
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(14),
                   child: TextField(
-                    controller: controller,
+                    controller: textController,
                     onSubmitted: (value) {
                       messages.add(
                         {
                           'message': value,
                           'email': email,
+                          'created at': DateTime.now(),
                         },
                       );
-                      controller.clear();
+                      textController.clear();
+                      scrollController.jumpTo(
+                        scrollController.position.minScrollExtent,
+                      );
                     },
                     decoration: InputDecoration(
                       suffixIcon: Icon(
@@ -95,7 +109,11 @@ class ChatView extends StatelessWidget {
             ),
           );
         } else {
-          return Text('Loading');
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
       },
     );

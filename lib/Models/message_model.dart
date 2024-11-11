@@ -8,6 +8,9 @@ class MessageModel {
   });
 
   factory MessageModel.fromJson(jsonData) {
-    return MessageModel(message: jsonData['message'], email: jsonData['email']);
+    return MessageModel(
+      message: jsonData['message'],
+      email: jsonData['email'],
+    );
   }
 }
