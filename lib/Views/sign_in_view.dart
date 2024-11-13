@@ -1,15 +1,14 @@
-import 'dart:developer';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:scholar_chat_app/Helper/snackBar.dart';
 import 'package:scholar_chat_app/Views/chat_view.dart';
 import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scholar_chat_app/cubits/hide_password_cubit/show_hide_password_cubit.dart';
 import 'package:scholar_chat_app/cubits/login_cubit/login_cubit.dart';
 
 class SignInView extends StatelessWidget {
@@ -17,8 +16,8 @@ class SignInView extends StatelessWidget {
   String? email, password;
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  bool showpassword = true;
-  bool passowrdObsecure = false;
+  bool showPassword = true;
+  bool passwordObsecure = false;
 
   @override
   Widget build(BuildContext context) {
@@ -92,37 +91,48 @@ class SignInView extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomTextFormField(
-                      icon: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: IconButton(
-                          onPressed: () {
-                            if (showpassword == true) {
-                              showpassword = false;
-                              passowrdObsecure = true;
-                            } else {
-                              showpassword = true;
-                              passowrdObsecure = false;
-                            }
-                          },
-                          icon: showpassword == true
-                              ? const Icon(
-                                  FontAwesomeIcons.eye,
-                                  color: Colors.black54,
-                                  size: 25,
-                                )
-                              : const Icon(
-                                  FontAwesomeIcons.eyeSlash,
-                                  color: Colors.black54,
-                                  size: 25,
-                                ),
-                        ),
-                      ),
-                      obscureText: passowrdObsecure,
-                      onChanged: (value) {
-                        password = value;
+                    BlocConsumer<HidePasswordCubit, HidePasswordState>(
+                      listener: (context, state) {
+                        if (state is HidePasswordSuccessful) {
+                          showPassword = false;
+                          passwordObsecure = true;
+                        } else if (state is HidePasswordFaliure) {
+                          showPassword = true;
+                          passwordObsecure = false;
+                        }
                       },
-                      hint: 'Password',
+                      builder: (context, state) {
+                        return CustomTextFormField(
+                          icon: Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: IconButton(
+                              onPressed: () {
+                                BlocProvider.of<HidePasswordCubit>(context)
+                                    .showHidePassword(
+                                  showPassword: showPassword,
+                                  passwordObsecure: passwordObsecure,
+                                );
+                              },
+                              icon: showPassword == true
+                                  ? const Icon(
+                                      FontAwesomeIcons.eye,
+                                      color: Colors.black54,
+                                      size: 25,
+                                    )
+                                  : const Icon(
+                                      FontAwesomeIcons.eyeSlash,
+                                      color: Colors.black54,
+                                      size: 25,
+                                    ),
+                            ),
+                          ),
+                          obscureText: passwordObsecure,
+                          onChanged: (value) {
+                            password = value;
+                          },
+                          hint: 'Password',
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: 20,
@@ -173,12 +183,4 @@ class SignInView extends StatelessWidget {
       ),
     );
   }
-}
-
-void snackBar(BuildContext context, String content) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(content),
-    ),
-  );
 }

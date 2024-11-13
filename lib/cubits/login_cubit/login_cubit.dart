@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
@@ -18,8 +16,7 @@ class LoginCubit extends Cubit<LoginState> {
       );
       emit(LoginSuccessful());
     } on FirebaseAuthException catch (e) {
-      log(e.code);
-      switch (e.code) {
+      switch (e.code.toString()) {
         case 'invalid-email':
           emit(LoginFaliure(errorMessage: 'Invalid email address'));
           break;
