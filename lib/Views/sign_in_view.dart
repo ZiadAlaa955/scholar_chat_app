@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scholar_chat_app/Views/chat_view.dart';
@@ -9,16 +10,10 @@ import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scholar_chat_app/cubits/login_cubit/login_cubit.dart';
 
-class SignInView extends StatefulWidget {
-  const SignInView({super.key});
+class SignInView extends StatelessWidget {
   static String id = 'siginView';
-
-  @override
-  State<SignInView> createState() => _SignInViewState();
-}
-
-class _SignInViewState extends State<SignInView> {
   String? email, password;
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -27,12 +22,23 @@ class _SignInViewState extends State<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimaryColor,
-      body: Center(
-        child: ModalProgressHUD(
-          inAsyncCall: isLoading,
-          child: Padding(
+    return BlocConsumer<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state is LoginLoading) {
+          isLoading = true;
+        } else if (state is LoginSuccessful) {
+          isLoading = false;
+          Navigator.pushNamed(context, ChatView.id, arguments: email);
+        } else if (state is LoginFaliure) {
+          isLoading = false;
+          snackBar(context, state.errorMessage);
+        }
+      },
+      builder: (context, state) => ModalProgressHUD(
+        inAsyncCall: isLoading,
+        child: Scaffold(
+          backgroundColor: kPrimaryColor,
+          body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Form(
               key: formKey,
@@ -98,7 +104,6 @@ class _SignInViewState extends State<SignInView> {
                               showpassword = true;
                               passowrdObsecure = false;
                             }
-                            setState(() {});
                           },
                           icon: showpassword == true
                               ? const Icon(
@@ -125,31 +130,10 @@ class _SignInViewState extends State<SignInView> {
                     CustomButton(
                       text: 'Sign In',
                       onTap: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
                         if (formKey.currentState!.validate()) {
-                          try {
-                            await logIn();
-                            Navigator.pushNamed(context, ChatView.id,
-                                arguments: email);
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'user-not-found') {
-                              snackBar(context, 'User not found');
-                            } else if (e.code == 'wrong-password') {
-                              snackBar(context, 'Wrong passwor');
-                            } else {
-                              snackBar(context, e.toString());
-                            }
-                          } on Exception catch (e) {
-                            snackBar(context, e.toString());
-                          }
+                          BlocProvider.of<LoginCubit>(context)
+                              .logIn(email: email!, password: password!);
                         }
-                        setState(
-                          () {
-                            isLoading = false;
-                          },
-                        );
                       },
                     ),
                     const SizedBox(
@@ -187,13 +171,6 @@ class _SignInViewState extends State<SignInView> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> logIn() async {
-    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: email!,
-      password: password!,
     );
   }
 }
