@@ -8,7 +8,7 @@ import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/constants.dart';
-import 'package:scholar_chat_app/cubits/hide_password_cubit/show_hide_password_cubit.dart';
+import 'package:scholar_chat_app/cubits/hide_password_cubit/hide_password_cubit.dart';
 import 'package:scholar_chat_app/cubits/login_cubit/login_cubit.dart';
 
 class SignInView extends StatelessWidget {
