@@ -8,6 +8,7 @@ import 'package:scholar_chat_app/Views/sign_in_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/constants.dart';
+import 'package:scholar_chat_app/cubits/chat_cubit/chat_cubit.dart';
 import 'package:scholar_chat_app/cubits/hide_password_cubit/hide_password_cubit.dart';
 import 'package:scholar_chat_app/cubits/signup_cubit/signup_cubit.dart';
 
@@ -27,6 +28,7 @@ class SignUpView extends StatelessWidget {
           isLoading = true;
         } else if (state is SignupSuccess) {
           isLoading = false;
+          BlocProvider.of<ChatCubit>(context).getMessages();
           Navigator.pushNamed(context, ChatView.id, arguments: email);
         } else if (state is SignupFaliure) {
           isLoading = false;

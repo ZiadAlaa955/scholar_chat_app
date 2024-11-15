@@ -8,8 +8,9 @@ import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/constants.dart';
+import 'package:scholar_chat_app/cubits/chat_cubit/chat_cubit.dart';
 import 'package:scholar_chat_app/cubits/hide_password_cubit/hide_password_cubit.dart';
-import 'package:scholar_chat_app/cubits/login_cubit/login_cubit.dart';
+import 'package:scholar_chat_app/cubits/signin_cubit/signin_cubit.dart';
 
 class SignInView extends StatelessWidget {
   static String id = 'siginView';
@@ -27,6 +28,7 @@ class SignInView extends StatelessWidget {
           isLoading = true;
         } else if (state is LoginSuccess) {
           isLoading = false;
+          BlocProvider.of<ChatCubit>(context).getMessages();
           Navigator.pushNamed(context, ChatView.id, arguments: email);
         } else if (state is LoginFaliure) {
           isLoading = false;
@@ -141,8 +143,10 @@ class SignInView extends StatelessWidget {
                       text: 'Sign In',
                       onTap: () async {
                         if (formKey.currentState!.validate()) {
-                          BlocProvider.of<LoginCubit>(context)
-                              .logIn(email: email!, password: password!);
+                          BlocProvider.of<LoginCubit>(context).logIn(
+                            email: email!,
+                            password: password!,
+                          );
                         }
                       },
                     ),
