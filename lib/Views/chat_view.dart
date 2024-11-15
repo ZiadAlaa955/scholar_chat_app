@@ -11,6 +11,7 @@ class ChatView extends StatelessWidget {
 
   final CollectionReference messages =
       FirebaseFirestore.instance.collection(kMessagesCollection);
+
   TextEditingController textController = TextEditingController();
   ScrollController scrollController = ScrollController();
 
@@ -117,9 +118,9 @@ class ChatView extends StatelessWidget {
 
   void sendMessage(String value, String email) {
     messages.add({
-      kMessage: value, // John Doe
-      kEmail: email, // Stokes and Sons
-      kCreatedAt: DateTime.now(), // ,42
+      kMessage: value,
+      kEmail: email,
+      kCreatedAt: DateTime.now(),
     });
     textController.clear();
     scrollController.jumpTo(
