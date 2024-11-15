@@ -13,7 +13,7 @@ class SignupCubit extends Cubit<SignupState> {
         email: email,
         password: password,
       );
-      emit(SignupSuccessful());
+      emit(SignupSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code.toString() == 'weak-password') {
         emit(SignupFaliure(errorMessage: 'The password is too weak'));

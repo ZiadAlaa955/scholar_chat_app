@@ -10,11 +10,11 @@ class HidePasswordCubit extends Cubit<HidePasswordState> {
     if (showPassword == true) {
       showPassword = false;
       passwordObsecure = true;
-      emit(HidePasswordSuccessful());
+      emit(HidePassword());
     } else {
       showPassword = true;
       passwordObsecure = false;
-      emit(HidePasswordFaliure());
+      emit(ShowPassword());
     }
   }
 }

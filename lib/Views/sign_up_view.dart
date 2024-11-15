@@ -25,7 +25,7 @@ class SignUpView extends StatelessWidget {
       listener: (context, state) {
         if (state is SignupLoading) {
           isLoading = true;
-        } else if (state is SignupSuccessful) {
+        } else if (state is SignupSuccess) {
           isLoading = false;
           Navigator.pushNamed(context, ChatView.id, arguments: email);
         } else if (state is SignupFaliure) {
@@ -94,10 +94,10 @@ class SignUpView extends StatelessWidget {
                       ),
                       BlocConsumer<HidePasswordCubit, HidePasswordState>(
                         listener: (context, state) {
-                          if (state is HidePasswordSuccessful) {
+                          if (state is HidePassword) {
                             showPassword = false;
                             passwordObsecure = true;
-                          } else if (state is HidePasswordFaliure) {
+                          } else if (state is ShowPassword) {
                             showPassword = true;
                             passwordObsecure = false;
                           }

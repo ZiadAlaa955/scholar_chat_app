@@ -5,6 +5,6 @@ sealed class HidePasswordState {}
 
 final class HidePasswordInitial extends HidePasswordState {}
 
-final class HidePasswordSuccessful extends HidePasswordState {}
+final class HidePassword extends HidePasswordState {}
 
-final class HidePasswordFaliure extends HidePasswordState {}
+final class ShowPassword extends HidePasswordState {}
