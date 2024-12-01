@@ -7,8 +7,8 @@ import 'package:scholar_chat_app/Views/chat_view.dart';
 import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
+import 'package:scholar_chat_app/blocs/auth_bloc/auth_bloc.dart';
 import 'package:scholar_chat_app/constants.dart';
-import 'package:scholar_chat_app/cubits/auth_cubit/auth_cubit.dart';
 import 'package:scholar_chat_app/cubits/chat_cubit/chat_cubit.dart';
 import 'package:scholar_chat_app/cubits/hide_password_cubit/hide_password_cubit.dart';
 
@@ -22,15 +22,15 @@ class SignInView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is LoginLoading) {
+        if (state is SigninLoading) {
           isLoading = true;
-        } else if (state is LoginSuccess) {
+        } else if (state is SigninSuccess) {
           isLoading = false;
           BlocProvider.of<ChatCubit>(context).getMessages();
           Navigator.pushNamed(context, ChatView.id, arguments: email);
-        } else if (state is LoginFaliure) {
+        } else if (state is SigninFaliure) {
           isLoading = false;
           snackBar(context, state.errorMessage);
         }
@@ -143,10 +143,10 @@ class SignInView extends StatelessWidget {
                       text: 'Sign In',
                       onTap: () async {
                         if (formKey.currentState!.validate()) {
-                          BlocProvider.of<AuthCubit>(context).logIn(
+                          BlocProvider.of<AuthBloc>(context).add(SignInEvent(
                             email: email!,
                             password: password!,
-                          );
+                          ));
                         }
                       },
                     ),

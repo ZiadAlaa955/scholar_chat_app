@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
@@ -6,33 +8,34 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
-  logIn({required String email, required String password}) async {
-    emit(LoginLoading());
+  signIn({required String email, required String password}) async {
+    emit(SigninLoading());
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      emit(LoginSuccess());
+      emit(SigninSuccess());
     } on FirebaseAuthException catch (e) {
       switch (e.code.toString()) {
         case 'invalid-email':
-          emit(LoginFaliure(errorMessage: 'Invalid email address'));
+          emit(SigninFaliure(errorMessage: 'Invalid email address'));
           break;
         case 'wrong-password':
-          emit(LoginFaliure(errorMessage: 'Incorrect password'));
+          emit(SigninFaliure(errorMessage: 'Incorrect password'));
           break;
         case 'user-not-found':
-          emit(LoginFaliure(errorMessage: 'User not found'));
+          emit(SigninFaliure(errorMessage: 'User not found'));
           break;
         case 'user-disabled':
-          emit(LoginFaliure(errorMessage: 'User account disabled'));
+          emit(SigninFaliure(errorMessage: 'User account disabled'));
           break;
         default:
-          emit(LoginFaliure(errorMessage: e.code)); // Handle unexpected codes
+          emit(SigninFaliure(errorMessage: e.code)); // Handle unexpected codes
       }
     } on Exception catch (e) {
-      emit(LoginFaliure(errorMessage: 'Something went wrong: ${e.toString()}'));
+      emit(
+          SigninFaliure(errorMessage: 'Something went wrong: ${e.toString()}'));
     }
   }
 
