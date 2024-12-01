@@ -2,11 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
-part 'signin_state.dart';
+part 'auth_state.dart';
 
-class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(LoginInitial());
-
+class AuthCubit extends Cubit<AuthState> {
+  AuthCubit() : super(AuthInitial());
   logIn({required String email, required String password}) async {
     emit(LoginLoading());
     try {
@@ -34,6 +33,27 @@ class LoginCubit extends Cubit<LoginState> {
       }
     } on Exception catch (e) {
       emit(LoginFaliure(errorMessage: 'Something went wrong: ${e.toString()}'));
+    }
+  }
+
+  signUp({required String email, required String password}) async {
+    emit(SignupLoading());
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      emit(SignupSuccess());
+    } on FirebaseAuthException catch (e) {
+      if (e.code.toString() == 'weak-password') {
+        emit(SignupFaliure(errorMessage: 'The password is too weak'));
+      } else if (e.code == 'email-already-in-use') {
+        emit(SignupFaliure(errorMessage: 'The account already exists'));
+      } else {
+        emit(SignupFaliure(errorMessage: e.toString()));
+      }
+    } on Exception catch (e) {
+      emit(SignupFaliure(errorMessage: e.toString()));
     }
   }
 }

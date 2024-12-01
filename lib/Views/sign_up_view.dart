@@ -8,9 +8,9 @@ import 'package:scholar_chat_app/Views/sign_in_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/constants.dart';
+import 'package:scholar_chat_app/cubits/auth_cubit/auth_cubit.dart';
 import 'package:scholar_chat_app/cubits/chat_cubit/chat_cubit.dart';
 import 'package:scholar_chat_app/cubits/hide_password_cubit/hide_password_cubit.dart';
-import 'package:scholar_chat_app/cubits/signup_cubit/signup_cubit.dart';
 
 class SignUpView extends StatelessWidget {
   static String id = 'sugnupView';
@@ -22,7 +22,7 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SignupCubit, SignupState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is SignupLoading) {
           isLoading = true;
@@ -144,7 +144,7 @@ class SignUpView extends StatelessWidget {
                         text: 'Sign Up',
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
-                            BlocProvider.of<SignupCubit>(context)
+                            BlocProvider.of<AuthCubit>(context)
                                 .signUp(email: email!, password: password!);
                           }
                         },
