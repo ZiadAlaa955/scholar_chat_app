@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scholar_chat_app/Helper/snackBar.dart';
 import 'package:scholar_chat_app/Views/chat_view.dart';
-import 'package:scholar_chat_app/Views/sign_in_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
+import 'package:scholar_chat_app/app_routes.dart';
 import 'package:scholar_chat_app/constants.dart';
 import 'package:scholar_chat_app/cubits/auth_cubit/auth_cubit.dart';
 import 'package:scholar_chat_app/cubits/chat_cubit/chat_cubit.dart';
 import 'package:scholar_chat_app/cubits/hide_password_cubit/hide_password_cubit.dart';
 
 class SignUpView extends StatelessWidget {
-  static String id = 'sugnupView';
   String? email, password;
   bool isLoading = false;
   final formKey = GlobalKey<FormState>();
@@ -29,7 +29,8 @@ class SignUpView extends StatelessWidget {
         } else if (state is SignupSuccess) {
           isLoading = false;
           BlocProvider.of<ChatCubit>(context).getMessages();
-          Navigator.pushNamed(context, ChatView.id, arguments: email);
+          GoRouter.of(context).push(chat, extra: email);
+          //Navigator.pushNamed(context, ChatView.id, arguments: );
         } else if (state is SignupFaliure) {
           isLoading = false;
           snackBar(context, state.errorMessage);

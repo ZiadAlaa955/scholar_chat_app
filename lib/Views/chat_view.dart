@@ -8,15 +8,14 @@ import 'package:scholar_chat_app/constants.dart';
 import 'package:scholar_chat_app/cubits/chat_cubit/chat_cubit.dart';
 
 class ChatView extends StatelessWidget {
-  ChatView({super.key});
-  static String id = 'chatView';
+  ChatView({super.key, required this.email});
 
   TextEditingController textController = TextEditingController();
   ScrollController scrollController = ScrollController();
-
+  final String email;
   @override
   Widget build(BuildContext context) {
-    var email = ModalRoute.of(context)!.settings.arguments as String;
+    //var email = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
       appBar: AppBar(

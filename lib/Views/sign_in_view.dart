@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scholar_chat_app/Helper/snackBar.dart';
 import 'package:scholar_chat_app/Views/chat_view.dart';
 import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
+import 'package:scholar_chat_app/app_routes.dart';
 import 'package:scholar_chat_app/blocs/auth_bloc/auth_bloc.dart';
 import 'package:scholar_chat_app/constants.dart';
 import 'package:scholar_chat_app/cubits/chat_cubit/chat_cubit.dart';
 import 'package:scholar_chat_app/cubits/hide_password_cubit/hide_password_cubit.dart';
 
 class SignInView extends StatelessWidget {
-  static String id = 'siginView';
   String? email, password;
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -29,7 +30,8 @@ class SignInView extends StatelessWidget {
         } else if (state is SigninSuccess) {
           isLoading = false;
           BlocProvider.of<ChatCubit>(context).getMessages();
-          Navigator.pushNamed(context, ChatView.id, arguments: email);
+          GoRouter.of(context).push(chat, extra: email);
+          // Navigator.pushNamed(context, ChatView.id, arguments: email);
         } else if (state is SigninFaliure) {
           isLoading = false;
           snackBar(context, state.errorMessage);
@@ -164,7 +166,8 @@ class SignInView extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, SignUpView.id);
+                            GoRouter.of(context).push(signUp);
+                            //Navigator.pushNamed(context, SignUpView.id);
                           },
                           child: const Text(
                             '  Sign Up',
