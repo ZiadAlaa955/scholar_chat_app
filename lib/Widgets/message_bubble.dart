@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scholar_chat_app/Models/message_model.dart';
-import 'package:scholar_chat_app/constants.dart';
+import 'package:scholar_chat_app/Utils/constants.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({super.key, required this.messageModel});
@@ -22,17 +22,11 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 30,
-              top: 30,
-              bottom: 30,
-            ),
+            padding:
+                const EdgeInsets.only(left: 16, right: 30, top: 30, bottom: 30),
             child: Text(
               messageModel.message,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),

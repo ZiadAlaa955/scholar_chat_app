@@ -11,11 +11,11 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: signIn,
-      builder: (context, state) => SignInView(),
+      builder: (context, state) => const SignInView(),
     ),
     GoRoute(
       path: signUp,
-      builder: (context, state) => SignUpView(),
+      builder: (context, state) => const SignUpView(),
     ),
     GoRoute(
       path: chat,

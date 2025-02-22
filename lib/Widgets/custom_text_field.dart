@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_chat_app/Utils/helper.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -22,11 +23,10 @@ class CustomTextFormField extends StatelessWidget {
         if (value!.isEmpty) {
           return 'Field is required';
         }
+        return null;
       },
       onChanged: onChanged,
-      style: const TextStyle(
-        color: Colors.white,
-      ),
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         suffixIcon: icon,
         hintText: hint,
@@ -34,20 +34,10 @@ class CustomTextFormField extends StatelessWidget {
           vertical: 20,
           horizontal: 10,
         ),
-        hintStyle: const TextStyle(
-          color: Colors.white,
-        ),
+        hintStyle: const TextStyle(color: Colors.white),
         border: outlineInputBorder(),
         enabledBorder: outlineInputBorder(),
         focusedBorder: outlineInputBorder(),
-      ),
-    );
-  }
-
-  OutlineInputBorder outlineInputBorder() {
-    return const OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.white,
       ),
     );
   }

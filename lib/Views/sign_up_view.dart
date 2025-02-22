@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:scholar_chat_app/Helper/snackBar.dart';
+import 'package:scholar_chat_app/Utils/helper.dart';
 import 'package:scholar_chat_app/Widgets/custom_button.dart';
 import 'package:scholar_chat_app/Widgets/custom_text_field.dart';
 import 'package:scholar_chat_app/Widgets/password_icon.dart';
 import 'package:scholar_chat_app/Widgets/signin_navigation_text.dart';
-import 'package:scholar_chat_app/app_routes.dart';
-import 'package:scholar_chat_app/constants.dart';
-import 'package:scholar_chat_app/cubits/auth_cubit/auth_cubit.dart';
+import 'package:scholar_chat_app/Utils/app_routes.dart';
+import 'package:scholar_chat_app/Utils/constants.dart';
+import 'package:scholar_chat_app/cubits/signup_cubit/auth_cubit.dart';
 import 'package:scholar_chat_app/cubits/chat_cubit/chat_cubit.dart';
 
 class SignUpView extends StatefulWidget {
@@ -31,7 +31,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocConsumer<SignupCubit, SignupState>(
       listener: (context, state) {
         if (state is SignupLoading) {
           isLoading = true;
@@ -110,8 +110,10 @@ class _SignUpViewState extends State<SignUpView> {
                         text: 'Sign Up',
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
-                            BlocProvider.of<AuthCubit>(context)
-                                .signUp(email: email!, password: password!);
+                            BlocProvider.of<SignupCubit>(context).signUp(
+                              email: email!,
+                              password: password!,
+                            );
                           }
                         },
                       ),

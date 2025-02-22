@@ -1,4 +1,4 @@
-import 'package:scholar_chat_app/constants.dart';
+import 'package:scholar_chat_app/Utils/constants.dart';
 
 class MessageModel {
   final String message;

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
-import '../Constants.dart';
+import 'package:scholar_chat_app/Utils/constants.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({super.key, required this.text, this.onTap});
+
   final String text;
   final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -17,7 +18,8 @@ class CustomButton extends StatelessWidget {
         ),
         width: double.infinity,
         height: 50,
-        child: Center(
+        child: Align(
+          alignment: Alignment.center,
           child: Text(
             text,
             style: TextStyle(

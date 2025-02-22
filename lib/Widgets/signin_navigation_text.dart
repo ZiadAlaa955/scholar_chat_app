@@ -11,9 +11,7 @@ class SignInNavigationText extends StatelessWidget {
       children: [
         const Text(
           'Already have an account ?',
-          style: TextStyle(
-            color: Colors.white,
-          ),
+          style: TextStyle(color: Colors.white),
         ),
         GestureDetector(
           onTap: () {
@@ -21,9 +19,7 @@ class SignInNavigationText extends StatelessWidget {
           },
           child: const Text(
             '  Sign In',
-            style: TextStyle(
-              color: Color(0xffC5E8E8),
-            ),
+            style: TextStyle(color: Color(0xffC5E8E8)),
           ),
         ),
       ],

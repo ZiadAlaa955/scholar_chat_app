@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:scholar_chat_app/Models/message_model.dart';
-import 'package:scholar_chat_app/constants.dart';
+import 'package:scholar_chat_app/Utils/constants.dart';
 
 part 'chat_state.dart';
 

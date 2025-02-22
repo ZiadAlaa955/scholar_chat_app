@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:scholar_chat_app/app_routes.dart';
+import 'package:scholar_chat_app/Utils/app_routes.dart';
 
 class SignUpNavigationText extends StatelessWidget {
   const SignUpNavigationText({super.key});
@@ -12,9 +12,7 @@ class SignUpNavigationText extends StatelessWidget {
       children: [
         const Text(
           'Don\'t have an account ?',
-          style: TextStyle(
-            color: Colors.white,
-          ),
+          style: TextStyle(color: Colors.white),
         ),
         GestureDetector(
           onTap: () {
@@ -22,9 +20,7 @@ class SignUpNavigationText extends StatelessWidget {
           },
           child: const Text(
             '  Sign Up',
-            style: TextStyle(
-              color: Color(0xffC5E8E8),
-            ),
+            style: TextStyle(color: Color(0xffC5E8E8)),
           ),
         ),
       ],
