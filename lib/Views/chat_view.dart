@@ -15,8 +15,6 @@ class ChatView extends StatelessWidget {
   final String email;
   @override
   Widget build(BuildContext context) {
-    //var email = ModalRoute.of(context)!.settings.arguments as String;
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

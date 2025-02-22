@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scholar_chat_app/Views/chat_view.dart';
-import 'package:scholar_chat_app/Views/sign_in_view.dart';
-import 'package:scholar_chat_app/Views/sign_up_view.dart';
 import 'package:scholar_chat_app/app_routes.dart';
 import 'package:scholar_chat_app/blocs/auth_bloc/auth_bloc.dart';
 import 'package:scholar_chat_app/cubits/auth_cubit/auth_cubit.dart';
@@ -22,7 +19,7 @@ class ScholarChatApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => AuthBloc()),
