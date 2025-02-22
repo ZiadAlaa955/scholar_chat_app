@@ -29,8 +29,6 @@ class _SignInViewState extends State<SignInView> {
 
   bool isPasswordVisible = false;
 
-  final TextEditingController? passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
